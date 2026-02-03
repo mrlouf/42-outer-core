@@ -1,0 +1,18 @@
+[submodule "ft_malcolm"]
+	path = ft_malcolm
+	url = https://github.com/mrlouf/ft_malcolm.git
+[submodule "dr_quine"]
+	path = dr_quine
+	url = https://github.com/mrlouf/dr_quine.git
+[submodule "ft_ls"]
+	path = ft_ls
+	url = https://github.com/mrlouf/ft_ls.git
+[submodule "Inception-of-Things"]
+	path = Inception-of-Things
+	url = https://github.com/mrlouf/Inception-of-Things.git
+[submodule "42sh"]
+	path = 42sh
+	url = https://github.com/mrlouf/42sh.git
+[submodule "darkly"]
+	path = darkly
+	url = https://github.com/mrlouf/darkly.git
