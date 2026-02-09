@@ -1,0 +1,40 @@
+networks:
+  malcolm_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
+
+services:
+  containerA:
+    image: alpine:latest
+    # needed to manipulate network interfaces, clear ARP cache etc.
+    cap_add:
+      - NET_ADMIN
+    container_name: containerA
+    networks:
+      malcolm_network:
+        ipv4_address: 172.18.0.2
+    command: ["sleep", "infinity"]
+
+  containerB:
+    image: alpine:latest
+    cap_add:
+      - NET_ADMIN
+    container_name: containerB
+    networks:
+      malcolm_network:
+        ipv4_address: 172.18.0.3
+    command: ["sleep", "infinity"]
+
+  # our main in the middle
+  malcolm:
+    build: .
+    container_name: malcolm
+    networks:
+      malcolm_network:
+        ipv4_address: 172.18.0.42
+    depends_on:
+      - containerA
+      - containerB

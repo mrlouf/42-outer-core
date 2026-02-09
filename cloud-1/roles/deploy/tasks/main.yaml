@@ -1,0 +1,57 @@
+- name: Create application directory
+  file:
+    path: /home/{{ ansible_user }}/app
+    state: directory
+    owner: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Copy docker-compose.yml
+  copy:
+    src: ../../../app/docker-compose.yml
+    dest: /home/{{ ansible_user }}/app/docker-compose.yml
+    owner: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Copy .env file
+  copy:
+    src: ../../../app/.env
+    dest: /home/{{ ansible_user }}/app/.env
+    owner: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Copy image file
+  copy:
+    src: ../../../app/cloud.jpg
+    dest: /home/{{ ansible_user }}/app/cloud.jpg
+    owner: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Copy wp-install.sh script
+  copy:
+    src: ../../../app/wp-install.sh
+    dest: /home/{{ ansible_user }}/app/wp-install.sh
+    owner: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Copy nginx.conf file
+  copy:
+    src: ../../../app/nginx.conf
+    dest: /home/{{ ansible_user }}/app/nginx.conf
+    owner: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Generate self-signed SSL certificate
+  shell: |
+    mkdir -p certbot/conf
+    openssl req -x509 -nodes -days 365 \
+      -newkey rsa:2048 \
+      -keyout certbot/conf/selfsigned.key \
+      -out certbot/conf/selfsigned.crt \
+      -subj "/CN=mrlouf.studio"
+  args:
+    chdir: ./app
+
+- name: Start Docker Compose stack
+  community.docker.docker_compose_v2:
+    project_src: /home/{{ ansible_user }}/app
+    state: present

@@ -15,6 +15,8 @@ for repo in "${repos[@]}"; do
 
   git clone "https://github.com/mrlouf/$repo.git"
 
+  rm -rf "$repo/.git"
+
   echo "====== Merging $repo ======"
   
   # Add remote
@@ -37,6 +39,8 @@ for repo in "${repos[@]}"; do
   echo "✅ $repo merged successfully!"
   echo ""
 done
+
+git add .
 
 echo "🎉 All repos merged!  Pushing to GitHub..."
 git push origin main
